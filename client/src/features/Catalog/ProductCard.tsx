@@ -3,9 +3,8 @@ import { Product } from "../../app/models/product";
 import CardHeader from "@mui/material/CardHeader";
 import { Link } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
-import agent from "../../app/api/agent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { addBasketItemAsync, setBasket } from "../basket/basketSlice";
+import { addBasketItemAsync } from "../basket/basketSlice";
 
 interface Props {
     product: Product;
