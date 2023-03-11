@@ -1,11 +1,33 @@
 ﻿using E_CommerceReact.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace E_CommerceReact.Data
 {
     public static class DbInitializer
     {
-        public static void Initializer(StoreContext context)
+        public static async Task Initialize(StoreContext context, UserManager<User> userManager)
         {
+            if (!userManager.Users.Any())
+            {
+                var user = new User
+                {
+                    UserName = "dan",
+                    Email = "dan@test.com"
+                };
+
+                await userManager.CreateAsync(user, "Pa$$w0rd");
+                await userManager.AddToRoleAsync(user, "Member");
+
+                var admin = new User
+                {
+                    UserName = "admin",
+                    Email = "admin@test.com"
+                };
+
+                await userManager.CreateAsync(admin, "Pa$$w0rd");
+                await userManager.AddToRolesAsync(admin, new[] { "Member", "Admin" });
+            }
+
             if (context.Products.Any())
             {
                 return;
@@ -210,8 +232,8 @@ namespace E_CommerceReact.Data
                 },
             };
             // generate me a list of dummy products here
-            
-            foreach(var product in products)
+
+            foreach (var product in products)
             {
                 context.Products.Add(product);
             }
@@ -219,4 +241,5 @@ namespace E_CommerceReact.Data
         }
     }
 }
+
 

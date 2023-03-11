@@ -1,4 +1,6 @@
-﻿namespace E_CommerceReact.Entities
+﻿using E_CommerceReact.DTO;
+
+namespace E_CommerceReact.Entities
 {
     public class Basket
     {
@@ -24,6 +26,11 @@
             if (existingItem == null) return;
             existingItem.Quantity -= quantity;
             if (existingItem.Quantity == 0) Items.Remove(existingItem);
+        }
+
+        internal BasketDto MapBasketToDto()
+        {
+            throw new NotImplementedException();
         }
     }
 }
