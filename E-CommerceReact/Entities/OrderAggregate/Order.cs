@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace E_CommerceReact.Entities.OrderAggregate
 {
-    public class Order
+    public class Order 
     {
         public int Id { get; set; }
         public string BuyerId { get; set; }
@@ -18,7 +18,8 @@ namespace E_CommerceReact.Entities.OrderAggregate
         public long Subtotal { get; set; }
         public long DeliveryFee { get; set; }
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
-        
+        public string PaymentIntentId { get; set; }
+
         public long GetTotal()
         {
             return Subtotal + DeliveryFee;

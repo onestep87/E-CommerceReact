@@ -4,6 +4,7 @@ using E_CommerceReact.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceReact.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20230314103010_PaymentIntentAdded")]
+    partial class PaymentIntentAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +44,7 @@ namespace ECommerceReact.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Baskets", (string)null);
+                    b.ToTable("Baskets");
                 });
 
             modelBuilder.Entity("E_CommerceReact.Entities.BasketItem", b =>
@@ -67,7 +70,7 @@ namespace ECommerceReact.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("BasketItems", (string)null);
+                    b.ToTable("BasketItems");
                 });
 
             modelBuilder.Entity("E_CommerceReact.Entities.OrderAggregate.Order", b =>
@@ -98,7 +101,7 @@ namespace ECommerceReact.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("E_CommerceReact.Entities.OrderAggregate.OrderItems", b =>
@@ -122,7 +125,7 @@ namespace ECommerceReact.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("E_CommerceReact.Entities.Product", b =>
@@ -156,7 +159,7 @@ namespace ECommerceReact.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("E_CommerceReact.Entities.Role", b =>
@@ -299,7 +302,7 @@ namespace ECommerceReact.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserAddress", (string)null);
+                    b.ToTable("UserAddress");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -426,7 +429,7 @@ namespace ECommerceReact.Migrations
 
             modelBuilder.Entity("E_CommerceReact.Entities.OrderAggregate.Order", b =>
                 {
-                    b.OwnsOne("E_CommerceReact.Entities.OrderAggregate.Order.ShippingAddress#E_CommerceReact.Entities.OrderAggregate.ShippingAddress", "ShippingAddress", b1 =>
+                    b.OwnsOne("E_CommerceReact.Entities.OrderAggregate.ShippingAddress", "ShippingAddress", b1 =>
                         {
                             b1.Property<int>("OrderId")
                                 .HasColumnType("int");
@@ -454,7 +457,7 @@ namespace ECommerceReact.Migrations
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("Orders", (string)null);
+                            b1.ToTable("Orders");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -470,7 +473,7 @@ namespace ECommerceReact.Migrations
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
 
-                    b.OwnsOne("E_CommerceReact.Entities.OrderAggregate.OrderItems.ItemOrdered#E_CommerceReact.Entities.OrderAggregate.ProductItemOrdered", "ItemOrdered", b1 =>
+                    b.OwnsOne("E_CommerceReact.Entities.OrderAggregate.ProductItemOrdered", "ItemOrdered", b1 =>
                         {
                             b1.Property<int>("OrderItemsId")
                                 .HasColumnType("int");
@@ -486,7 +489,7 @@ namespace ECommerceReact.Migrations
 
                             b1.HasKey("OrderItemsId");
 
-                            b1.ToTable("OrderItems", (string)null);
+                            b1.ToTable("OrderItems");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemsId");

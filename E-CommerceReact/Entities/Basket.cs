@@ -7,6 +7,8 @@ namespace E_CommerceReact.Entities
         public string BuyerId { get; set; }
         public int Id { get; set; }
         public List<BasketItem> Items { get; set; } = new();
+        public string PaymentIntentId { get; set; }
+        public string ClientSecret { get; set; }
 
         public void AddItem(Product product, int quantity)
         {
@@ -28,9 +30,6 @@ namespace E_CommerceReact.Entities
             if (existingItem.Quantity == 0) Items.Remove(existingItem);
         }
 
-        internal BasketDto MapBasketToDto()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

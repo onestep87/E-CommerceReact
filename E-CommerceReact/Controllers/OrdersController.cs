@@ -92,6 +92,7 @@ namespace E_CommerceReact.Controllers
                 ShippingAddress = orderDTO.ShippingAddress,
                 Subtotal = subtotal,
                 DeliveryFee = deliveryFee,
+                PaymentIntentId = basket.PaymentIntentId,
             };
 
             storeContext.Orders.Add(order);
