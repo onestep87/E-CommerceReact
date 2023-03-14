@@ -4,6 +4,7 @@ using E_CommerceReact.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceReact.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20230312183437_OrderEntity")]
+    partial class OrderEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,7 +285,7 @@ namespace ECommerceReact.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("State")
+                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Zip")
@@ -437,7 +440,7 @@ namespace ECommerceReact.Migrations
                             b1.Property<string>("FullName")
                                 .HasColumnType("nvarchar(max)");
 
-                            b1.Property<string>("State")
+                            b1.Property<string>("Phone")
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Zip")

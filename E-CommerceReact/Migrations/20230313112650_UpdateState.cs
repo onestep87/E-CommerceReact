@@ -5,14 +5,20 @@
 namespace ECommerceReact.Migrations
 {
     /// <inheritdoc />
-    public partial class updateProduct : Migration
+    public partial class UpdateState : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Type",
-                table: "Products",
+                name: "State",
+                table: "UserAddress",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "ShippingAddress_State",
+                table: "Orders",
                 type: "nvarchar(max)",
                 nullable: true);
         }
@@ -21,8 +27,12 @@ namespace ECommerceReact.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Type",
-                table: "Products");
+                name: "State",
+                table: "UserAddress");
+
+            migrationBuilder.DropColumn(
+                name: "ShippingAddress_State",
+                table: "Orders");
         }
     }
 }

@@ -12,23 +12,23 @@ namespace E_CommerceReact.Controllers
 {
     public class AccountController : BaseApiController
     {
-        private readonly UserManager<User> _userManager;
-        private readonly TokenService _tokenService;
-        private readonly StoreContext _context;
+        private readonly UserManager<User> userManager;
+        private readonly TokenService tokenService;
+        private readonly StoreContext context;
 
         public AccountController(UserManager<User> userManager, TokenService tokenService,
             StoreContext context)
         {
-            _context = context;
-            _tokenService = tokenService;
-            _userManager = userManager;
+            this.context = context;
+            this.tokenService = tokenService;
+            this.userManager = userManager;
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login(LoginDTO LoginDTO)
         {
-            var user = await _userManager.FindByNameAsync(LoginDTO.Username);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, LoginDTO.Password))
+            var user = await userManager.FindByNameAsync(LoginDTO.Username);
+            if (user == null || !await userManager.CheckPasswordAsync(user, LoginDTO.Password))
                 return Unauthorized();
 
             var userBasket = await RetrieveBasket(LoginDTO.Username);
@@ -36,16 +36,16 @@ namespace E_CommerceReact.Controllers
 
             if (anonBasket != null)
             {
-                if (userBasket != null) _context.Baskets.Remove(userBasket);
+                if (userBasket != null) context.Baskets.Remove(userBasket);
                 anonBasket.BuyerId = user.UserName;
                 Response.Cookies.Delete("buyerId");
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
 
             return new UserDTO
             {
                 Email = user.Email,
-                Token = await _tokenService.GenerateToken(user),
+                Token = await tokenService.GenerateToken(user),
                 Basket = anonBasket != null ? anonBasket.MapBasketToDTO() : userBasket?.MapBasketToDTO()
             };
         }
@@ -55,7 +55,7 @@ namespace E_CommerceReact.Controllers
         {
             var user = new User { UserName = registerDto.Username, Email = registerDto.Email };
 
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            var result = await userManager.CreateAsync(user, registerDto.Password);
 
             if (!result.Succeeded)
             {
@@ -67,7 +67,7 @@ namespace E_CommerceReact.Controllers
                 return ValidationProblem();
             }
 
-            await _userManager.AddToRoleAsync(user, "Member");
+            await userManager.AddToRoleAsync(user, "Member");
 
             return StatusCode(201);
         }
@@ -76,16 +76,27 @@ namespace E_CommerceReact.Controllers
         [HttpGet("currentUser")]
         public async Task<ActionResult<UserDTO>> GetCurrentUser()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
 
             var userBasket = await RetrieveBasket(User.Identity.Name);
 
             return new UserDTO
             {
                 Email = user.Email,
-                Token = await _tokenService.GenerateToken(user),
+                Token = await tokenService.GenerateToken(user),
                 Basket = userBasket?.MapBasketToDTO()
             };
+        }
+
+
+        [Authorize]
+        [HttpGet("savedAddress")]
+        public async Task<ActionResult<UserAddress>> GetSavedAddress()
+        {
+            return await userManager.Users
+                .Where(x => x.UserName == User.Identity.Name)
+                .Select(x => x.Address)
+                .FirstOrDefaultAsync();
         }
 
         private async Task<Basket> RetrieveBasket(string buyerId)
@@ -96,7 +107,7 @@ namespace E_CommerceReact.Controllers
                 return null;
             }
 
-            return await _context.Baskets
+            return await context.Baskets
                 .Include(i => i.Items)
                 .ThenInclude(p => p.Product)
                 .FirstOrDefaultAsync(basket => basket.BuyerId == buyerId);

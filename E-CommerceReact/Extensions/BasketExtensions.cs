@@ -1,5 +1,6 @@
 ﻿using E_CommerceReact.DTO;
 using E_CommerceReact.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,13 @@ namespace E_CommerceReact.Extensions
                     Quantity = item.Quantity
                 }).ToList()
             };
+        }
+
+        public static IQueryable<Basket> RetrieveBasketWithItems(this IQueryable<Basket> baskets, string buyerId)
+        {
+            return baskets.Where(basket => basket.BuyerId == buyerId)
+                .Include(basket => basket.Items)
+                .ThenInclude(item => item.Product);
         }
     }
 }

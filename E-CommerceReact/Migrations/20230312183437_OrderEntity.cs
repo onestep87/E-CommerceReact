@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ECommerceReact.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityAdded : Migration
+    public partial class OrderEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,8 @@ namespace ECommerceReact.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -31,7 +32,8 @@ namespace ECommerceReact.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -53,12 +55,68 @@ namespace ECommerceReact.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Baskets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BuyerId = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Baskets", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BuyerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ShippingAddressFullName = table.Column<string>(name: "ShippingAddress_FullName", type: "nvarchar(max)", nullable: true),
+                    ShippingAddressAddress1 = table.Column<string>(name: "ShippingAddress_Address1", type: "nvarchar(max)", nullable: true),
+                    ShippingAddressAddress2 = table.Column<string>(name: "ShippingAddress_Address2", type: "nvarchar(max)", nullable: true),
+                    ShippingAddressCity = table.Column<string>(name: "ShippingAddress_City", type: "nvarchar(max)", nullable: true),
+                    ShippingAddressZip = table.Column<string>(name: "ShippingAddress_Zip", type: "nvarchar(max)", nullable: true),
+                    ShippingAddressCountry = table.Column<string>(name: "ShippingAddress_Country", type: "nvarchar(max)", nullable: true),
+                    ShippingAddressPhone = table.Column<string>(name: "ShippingAddress_Phone", type: "nvarchar(max)", nullable: true),
+                    Subtotal = table.Column<long>(type: "bigint", nullable: false),
+                    DeliveryFee = table.Column<long>(type: "bigint", nullable: false),
+                    OrderStatus = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<long>(type: "bigint", nullable: false),
+                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QuantityInStock = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -79,7 +137,7 @@ namespace ECommerceReact.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -101,7 +159,7 @@ namespace ECommerceReact.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,8 +176,8 @@ namespace ECommerceReact.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,7 +200,7 @@ namespace ECommerceReact.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -158,13 +216,87 @@ namespace ECommerceReact.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserAddress",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Zip = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAddress", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAddress_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ItemOrderedProductId = table.Column<int>(name: "ItemOrdered_ProductId", type: "int", nullable: true),
+                    ItemOrderedName = table.Column<string>(name: "ItemOrdered_Name", type: "nvarchar(max)", nullable: true),
+                    ItemOrderedPictureUrl = table.Column<string>(name: "ItemOrdered_PictureUrl", type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<long>(type: "bigint", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderItems_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BasketItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    BasketId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BasketItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BasketItems_Baskets_BasketId",
+                        column: x => x.BasketId,
+                        principalTable: "Baskets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BasketItems_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "5bc907c0-dfef-43a4-a718-0add397cdf7f", null, "Admin", "ADMIN" },
-                    { "c9aa430e-56ca-4fbe-8f83-d1882add0b61", null, "Member", "MEMBER" }
+                    { 1, null, "Member", "MEMBER" },
+                    { 2, null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -205,6 +337,21 @@ namespace ECommerceReact.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BasketItems_BasketId",
+                table: "BasketItems",
+                column: "BasketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BasketItems_ProductId",
+                table: "BasketItems",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_OrderId",
+                table: "OrderItems",
+                column: "OrderId");
         }
 
         /// <inheritdoc />
@@ -226,7 +373,25 @@ namespace ECommerceReact.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BasketItems");
+
+            migrationBuilder.DropTable(
+                name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "UserAddress");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Baskets");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
