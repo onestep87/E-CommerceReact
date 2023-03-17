@@ -67,6 +67,7 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 {
     opt.UseNpgsql(connString);
 });
+
 builder.Services.AddCors();
 builder.Services.AddIdentityCore<User>(opt =>
 {
