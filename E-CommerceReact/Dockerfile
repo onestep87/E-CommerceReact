@@ -1,23 +1,21 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 EXPOSE 8080
-WORKDIR /src
-COPY ["E-CommerceReact/E-CommerceReact.csproj", "E-CommerceReact/"]
-RUN dotnet restore "E-CommerceReact/E-CommerceReact.csproj"
-COPY . .
-WORKDIR "/src/E-CommerceReact"
-RUN dotnet build "E-CommerceReact.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "E-CommerceReact.csproj" -c Release -o /app/publish
-
-FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+# copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
+
+# copy everything else and build app
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+COPY --from=base /app/out .
 ENTRYPOINT ["dotnet", "E-CommerceReact.dll"]
