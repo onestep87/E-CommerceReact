@@ -11,7 +11,7 @@ namespace E_CommerceReact.Entities.OrderAggregate
     {
         public int Id { get; set; }
         public string BuyerId { get; set; }
-        public DateTime OrderDate { get; set; } = DateTime.Now;
+        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
         [Required]
         public ShippingAddress ShippingAddress { get; set; }
         public List<OrderItems> OrderItems { get; set; }
