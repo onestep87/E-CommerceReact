@@ -2,9 +2,10 @@
 
 
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-EXPOSE 8080
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 WORKDIR /app
+EXPOSE 8080
+
 
 # copy csproj and restore as distinct layers
 COPY *.csproj ./
@@ -15,7 +16,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 
 WORKDIR /app
-COPY --from=base /app/out .
+COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "E-CommerceReact.dll"]
