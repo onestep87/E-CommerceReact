@@ -1,4 +1,4 @@
-# fly.toml file generated for ecommercereact on 2023-03-17T17:32:30+01:00
+# fly.toml file generated for ecommercereact on 2023-03-17T12:48:57+01:00
 
 app = "ecommercereact"
 kill_signal = "SIGINT"
@@ -10,9 +10,8 @@ processes = []
   image = "onestep87/ecommercereact:latest"
 
 [env]
-  ASPNETCORE_URLS = "http://+:8080"
-  StripeSettings__PublishableKey = "pk_test_51MlUpIEVOOgk4yCKOQMh7zI9hd8AYkA7COxDeVCOnvg9i5WPyuLdAi2GLt7XkHszwPm1MOY8ntEpo1iBiQnug9BR00MAUkzNE7"
-
+ASPNETCORE_URLS="http://+:8080"
+StripeSettings__PublishableKey="pk_test_51MlUpIEVOOgk4yCKOQMh7zI9hd8AYkA7COxDeVCOnvg9i5WPyuLdAi2GLt7XkHszwPm1MOY8ntEpo1iBiQnug9BR00MAUkzNE7"
 [experimental]
   auto_rollback = true
 
