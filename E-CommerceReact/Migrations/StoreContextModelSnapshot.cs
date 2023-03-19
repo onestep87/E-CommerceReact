@@ -41,7 +41,7 @@ namespace E_CommerceReact.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Baskets");
+                    b.ToTable("Baskets", (string)null);
                 });
 
             modelBuilder.Entity("E_CommerceReact.Entities.BasketItem", b =>
@@ -67,7 +67,7 @@ namespace E_CommerceReact.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("BasketItems");
+                    b.ToTable("BasketItems", (string)null);
                 });
 
             modelBuilder.Entity("E_CommerceReact.Entities.OrderAggregate.Order", b =>
@@ -98,7 +98,7 @@ namespace E_CommerceReact.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("E_CommerceReact.Entities.OrderAggregate.OrderItems", b =>
@@ -122,7 +122,7 @@ namespace E_CommerceReact.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("E_CommerceReact.Entities.Product", b =>
@@ -148,6 +148,9 @@ namespace E_CommerceReact.Migrations
                     b.Property<long>("Price")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("PublicId")
+                        .HasColumnType("text");
+
                     b.Property<int>("QuantityInStock")
                         .HasColumnType("integer");
 
@@ -156,7 +159,7 @@ namespace E_CommerceReact.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("E_CommerceReact.Entities.Role", b =>
@@ -297,7 +300,7 @@ namespace E_CommerceReact.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserAddress");
+                    b.ToTable("UserAddress", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -424,7 +427,7 @@ namespace E_CommerceReact.Migrations
 
             modelBuilder.Entity("E_CommerceReact.Entities.OrderAggregate.Order", b =>
                 {
-                    b.OwnsOne("E_CommerceReact.Entities.OrderAggregate.ShippingAddress", "ShippingAddress", b1 =>
+                    b.OwnsOne("E_CommerceReact.Entities.OrderAggregate.Order.ShippingAddress#E_CommerceReact.Entities.OrderAggregate.ShippingAddress", "ShippingAddress", b1 =>
                         {
                             b1.Property<int>("OrderId")
                                 .HasColumnType("integer");
@@ -452,7 +455,7 @@ namespace E_CommerceReact.Migrations
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("Orders");
+                            b1.ToTable("Orders", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -468,7 +471,7 @@ namespace E_CommerceReact.Migrations
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
 
-                    b.OwnsOne("E_CommerceReact.Entities.OrderAggregate.ProductItemOrdered", "ItemOrdered", b1 =>
+                    b.OwnsOne("E_CommerceReact.Entities.OrderAggregate.OrderItems.ItemOrdered#E_CommerceReact.Entities.OrderAggregate.ProductItemOrdered", "ItemOrdered", b1 =>
                         {
                             b1.Property<int>("OrderItemsId")
                                 .HasColumnType("integer");
@@ -484,7 +487,7 @@ namespace E_CommerceReact.Migrations
 
                             b1.HasKey("OrderItemsId");
 
-                            b1.ToTable("OrderItems");
+                            b1.ToTable("OrderItems", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemsId");

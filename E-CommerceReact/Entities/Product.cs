@@ -10,6 +10,7 @@
         public string Brand { get; set; }
         public string Type { get; set; }
         public int QuantityInStock { get; set; }
+        public string PublicId { get; set; }
         //public int Rating { get; set; }
         //public int NumReviews { get; set; }
     }

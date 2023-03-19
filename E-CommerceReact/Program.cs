@@ -1,6 +1,7 @@
 using E_CommerceReact.Data;
 using E_CommerceReact.Entities;
 using E_CommerceReact.Middleware;
+using E_CommerceReact.RequestHelpers;
 using E_CommerceReact.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -15,8 +16,8 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
-
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
 
@@ -68,6 +69,8 @@ builder.Services.AddDbContext<StoreContext>(opt =>
     opt.UseNpgsql(connString);
 });
 
+
+
 builder.Services.AddCors();
 builder.Services.AddIdentityCore<User>(opt =>
 {
@@ -93,6 +96,7 @@ builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<PaymentService>();
+builder.Services.AddScoped<ImageService>();
 
 
 var app = builder.Build();

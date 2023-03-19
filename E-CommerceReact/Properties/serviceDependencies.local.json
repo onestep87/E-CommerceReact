@@ -3,10 +3,6 @@
     "secrets1": {
       "type": "secrets.user"
     },
-    "sqlite1": {
-      "ignored": "true",
-      "type": "sqlite"
-    },
     "mssql1": {
       "secretStore": "LocalSecretsFile",
       "resourceId": null,
