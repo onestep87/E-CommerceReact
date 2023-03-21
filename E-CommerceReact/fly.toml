@@ -1,0 +1,43 @@
+# fly.toml file generated for onestep87 on 2023-03-21T08:33:32+01:00
+
+app = "onestep87"
+kill_signal = "SIGINT"
+kill_timeout = 5
+primary_region = "ams"
+processes = []
+
+[build]
+  image = "onestep87/ecommercereact:latest"
+
+[env]
+  ASPNETCORE_URLS = "http://+:8080"
+  StripeSettings__PublishableKey = "pk_test_51MlUpIEVOOgk4yCKOQMh7zI9hd8AYkA7COxDeVCOnvg9i5WPyuLdAi2GLt7XkHszwPm1MOY8ntEpo1iBiQnug9BR00MAUkzNE7"
+
+[experimental]
+  auto_rollback = true
+
+[[services]]
+  http_checks = []
+  internal_port = 8080
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
